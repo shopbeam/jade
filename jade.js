@@ -1,4 +1,4 @@
-!function(e){if("object"==typeof exports&&"undefined"!=typeof module)module.exports=e();else if("function"==typeof define&&define.amd)define([],e);else{var f;"undefined"!=typeof window?f=window:"undefined"!=typeof global?f=global:"undefined"!=typeof self&&(f=self),f.jade=e()}}(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+!function(e){var jade = e();if("object"==typeof exports&&"undefined"!=typeof module)module.exports=jade; var f;"undefined"!=typeof window?f=window:"undefined"!=typeof global?f=global:"undefined"!=typeof self&&(f=self),f.jade=jade}}(function(){var module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 /*!
  * Jade - Compiler
  * Copyright(c) 2010 TJ Holowaychuk <tj@vision-media.ca>
@@ -1012,7 +1012,7 @@ function assertNestingCorrect(exp) {
  */
 
 Lexer.prototype = {
-  
+
   /**
    * Construct a token with the given `type` and `val`.
    *
@@ -1021,7 +1021,7 @@ Lexer.prototype = {
    * @return {Object}
    * @api private
    */
-  
+
   tok: function(type, val){
     return {
         type: type
@@ -1029,18 +1029,18 @@ Lexer.prototype = {
       , val: val
     }
   },
-  
+
   /**
    * Consume the given `len` of input.
    *
    * @param {Number} len
    * @api private
    */
-  
+
   consume: function(len){
     this.input = this.input.substr(len);
   },
-  
+
   /**
    * Scan for `type` with the given `regexp`.
    *
@@ -1049,7 +1049,7 @@ Lexer.prototype = {
    * @return {Object}
    * @api private
    */
-  
+
   scan: function(regexp, type){
     var captures;
     if (captures = regexp.exec(this.input)) {
@@ -1057,18 +1057,18 @@ Lexer.prototype = {
       return this.tok(type, captures[1]);
     }
   },
-  
+
   /**
    * Defer the given `tok`.
    *
    * @param {Object} tok
    * @api private
    */
-  
+
   defer: function(tok){
     this.deferredTokens.push(tok);
   },
-  
+
   /**
    * Lookahead `n` tokens.
    *
@@ -1076,20 +1076,20 @@ Lexer.prototype = {
    * @return {Object}
    * @api private
    */
-  
+
   lookahead: function(n){
     var fetch = n - this.stash.length;
     while (fetch-- > 0) this.stash.push(this.next());
     return this.stash[--n];
   },
-  
+
   /**
    * Return the indexOf `(` or `{` or `[` / `)` or `}` or `]` delimiters.
    *
    * @return {Number}
    * @api private
    */
-  
+
   bracketExpression: function(skip){
     skip = skip || 0;
     var start = this.input[skip];
@@ -1099,29 +1099,29 @@ Lexer.prototype = {
     if (this.input[range.end] !== end) throw new Error('start character ' + start + ' does not match end character ' + this.input[range.end]);
     return range;
   },
-  
+
   /**
    * Stashed token.
    */
-  
+
   stashed: function() {
     return this.stash.length
       && this.stash.shift();
   },
-  
+
   /**
    * Deferred token.
    */
-  
+
   deferred: function() {
-    return this.deferredTokens.length 
+    return this.deferredTokens.length
       && this.deferredTokens.shift();
   },
-  
+
   /**
    * end-of-source.
    */
-  
+
   eos: function() {
     if (this.input.length) return;
     if (this.indentStack.length) {
@@ -1135,7 +1135,7 @@ Lexer.prototype = {
   /**
    * Blank line.
    */
-  
+
   blank: function() {
     var captures;
     if (captures = /^\n *\n/.exec(this.input)) {
@@ -1149,7 +1149,7 @@ Lexer.prototype = {
   /**
    * Comment.
    */
-  
+
   comment: function() {
     var captures;
     if (captures = /^ *\/\/(-)?([^\n]*)/.exec(this.input)) {
@@ -1181,7 +1181,7 @@ Lexer.prototype = {
   /**
    * Tag.
    */
-  
+
   tag: function() {
     var captures;
     if (captures = /^(\w[-:\w]*)(\/?)/.exec(this.input)) {
@@ -1199,19 +1199,19 @@ Lexer.prototype = {
       return tok;
     }
   },
-  
+
   /**
    * Filter.
    */
-  
+
   filter: function() {
     return this.scan(/^:(\w+)/, 'filter');
   },
-  
+
   /**
    * Doctype.
    */
-  
+
   doctype: function() {
     return this.scan(/^(?:!!!|doctype) *([^\n]+)?/, 'doctype');
   },
@@ -1219,23 +1219,23 @@ Lexer.prototype = {
   /**
    * Id.
    */
-  
+
   id: function() {
     return this.scan(/^#([\w-]+)/, 'id');
   },
-  
+
   /**
    * Class.
    */
-  
+
   className: function() {
     return this.scan(/^\.([\w-]+)/, 'class');
   },
-  
+
   /**
    * Text.
    */
-  
+
   text: function() {
     return this.scan(/^(?:\| ?| ?)?([^\n]+)/, 'text');
   },
@@ -1243,7 +1243,7 @@ Lexer.prototype = {
   /**
    * Extends.
    */
-  
+
   "extends": function() {
     return this.scan(/^extends? +([^\n]+)/, 'extends');
   },
@@ -1251,7 +1251,7 @@ Lexer.prototype = {
   /**
    * Block prepend.
    */
-  
+
   prepend: function() {
     var captures;
     if (captures = /^prepend +([^\n]+)/.exec(this.input)) {
@@ -1263,11 +1263,11 @@ Lexer.prototype = {
       return tok;
     }
   },
-  
+
   /**
    * Block append.
    */
-  
+
   append: function() {
     var captures;
     if (captures = /^append +([^\n]+)/.exec(this.input)) {
@@ -1283,7 +1283,7 @@ Lexer.prototype = {
   /**
    * Block.
    */
-  
+
   block: function() {
     var captures;
     if (captures = /^block\b *(?:(prepend|append) +)?([^\n]*)/.exec(this.input)) {
@@ -1300,7 +1300,7 @@ Lexer.prototype = {
   /**
    * Yield.
    */
-  
+
   yield: function() {
     return this.scan(/^yield */, 'yield');
   },
@@ -1308,7 +1308,7 @@ Lexer.prototype = {
   /**
    * Include.
    */
-  
+
   include: function() {
     return this.scan(/^include +([^\n]+)/, 'include');
   },
@@ -1316,7 +1316,7 @@ Lexer.prototype = {
   /**
    * Case.
    */
-  
+
   "case": function() {
     return this.scan(/^case +([^\n]+)/, 'case');
   },
@@ -1324,7 +1324,7 @@ Lexer.prototype = {
   /**
    * When.
    */
-  
+
   when: function() {
     return this.scan(/^when +([^:\n]+)/, 'when');
   },
@@ -1332,7 +1332,7 @@ Lexer.prototype = {
   /**
    * Default.
    */
-  
+
   "default": function() {
     return this.scan(/^default */, 'default');
   },
@@ -1340,7 +1340,7 @@ Lexer.prototype = {
   /**
    * Assignment.
    */
-  
+
   assignment: function() {
     var captures;
     if (captures = /^(\w+) += *([^;\n]+)( *;? *)/.exec(this.input)) {
@@ -1354,7 +1354,7 @@ Lexer.prototype = {
   /**
    * Call mixin.
    */
-  
+
   call: function(){
     var captures;
     if (captures = /^\+([-\w]+)/.exec(this.input)) {
@@ -1373,7 +1373,7 @@ Lexer.prototype = {
           //not a bracket expcetion, just unmatched open parens
         }
       }
-      
+
       return tok;
     }
   },
@@ -1395,7 +1395,7 @@ Lexer.prototype = {
   /**
    * Conditional.
    */
-  
+
   conditional: function() {
     var captures;
     if (captures = /^(if|unless|else if|else)\b([^\n]*)/.exec(this.input)) {
@@ -1431,7 +1431,7 @@ Lexer.prototype = {
   /**
    * While.
    */
-  
+
   "while": function() {
     var captures;
     if (captures = /^while +([^\n]+)/.exec(this.input)) {
@@ -1444,7 +1444,7 @@ Lexer.prototype = {
   /**
    * Each.
    */
-  
+
   each: function() {
     var captures;
     if (captures = /^(?:- *)?(?:each|for) +([a-zA-Z_$][\w$]*)(?: *, *([a-zA-Z_$][\w$]*))? * in *([^\n]+)/.exec(this.input)) {
@@ -1456,11 +1456,11 @@ Lexer.prototype = {
       return tok;
     }
   },
-  
+
   /**
    * Code.
    */
-  
+
   code: function() {
     var captures;
     if (captures = /^(!?=|-)[ \t]*([^\n]+)/.exec(this.input)) {
@@ -1474,11 +1474,11 @@ Lexer.prototype = {
       return tok;
     }
   },
-  
+
   /**
    * Attributes.
    */
-  
+
   attrs: function() {
     if ('(' == this.input.charAt(0)) {
       var index = this.bracketExpression().end
@@ -1613,11 +1613,11 @@ Lexer.prototype = {
       return tok;
     }
   },
-  
+
   /**
    * Indent | Outdent | Newline.
    */
-  
+
   indent: function() {
     var captures, re;
 
@@ -1675,7 +1675,7 @@ Lexer.prototype = {
   },
 
   /**
-   * Pipe-less text consumed only when 
+   * Pipe-less text consumed only when
    * pipeless is true;
    */
 
@@ -1705,19 +1705,19 @@ Lexer.prototype = {
    * @return {Object}
    * @api private
    */
-  
+
   advance: function(){
     return this.stashed()
       || this.next();
   },
-  
+
   /**
    * Return the next token object.
    *
    * @return {Object}
    * @api private
    */
-  
+
   next: function() {
     return this.deferred()
       || this.blank()
@@ -2133,7 +2133,7 @@ Comment.prototype.constructor.name = 'Comment'; // prevent the minifiers removin
 var Node = require('./node');
 
 /**
- * Initialize a `Doctype` with the given `val`. 
+ * Initialize a `Doctype` with the given `val`.
  *
  * @param {String} val
  * @api public
@@ -2425,13 +2425,13 @@ Tag.prototype.canInline = function(){
     if (node.isBlock) return node.nodes.every(isInline);
     return node.isText || (node.isInline && node.isInline());
   }
-  
+
   // Empty tag
   if (!nodes.length) return true;
-  
+
   // Text-only or inline-only tag
   if (1 == nodes.length) return isInline(nodes[0]);
-  
+
   // Multi-line inline-only tag
   if (this.block.nodes.every(isInline)) {
     for (var i = 1, len = nodes.length; i < len; ++i) {
@@ -2440,7 +2440,7 @@ Tag.prototype.canInline = function(){
     }
     return true;
   }
-  
+
   // Mixed tag
   return false;
 };
